@@ -38,6 +38,7 @@ router.post('/signup', async (req, res) => {
 })
 
 router.post('/login', async (req, res) => {
+    console.log("1");
     try{
         //1. Check if user exists
         const user = await User.findOne({email: req.body.email});
@@ -47,7 +48,8 @@ router.post('/login', async (req, res) => {
                 success: false
             })
         }
-
+        console.log("2");
+        
         //2. check if the password is correct
         const isvalid = await bcrypt.compare(req.body.password, user.password);
         if(!isvalid){
@@ -56,10 +58,12 @@ router.post('/login', async (req, res) => {
                 success: false
             })
         }
-
+        console.log("3");
+        
         //3. If the user exists & password is correct, assign a JWT
         const token = jwt.sign({userId: user._id}, process.env.SECRET_KEY, {expiresIn: "1d"});
-
+        
+        console.log("4");
         res.send({
             message: 'user logged-in successfully',
             success: true,
